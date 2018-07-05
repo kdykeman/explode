@@ -9,11 +9,11 @@ usage() {
   exit 1
 }
 
-pushd () {
+pushd() {
   command pushd "$@" > /dev/null
 }
 
-popd () {
+popd() {
   command popd "$@" > /dev/null
 }
 
@@ -30,7 +30,8 @@ explode() {
     echo "Exploding $target."
     explodeFile "$target" $depthleft
   elif [ -d "$target" ] ; then
-    for file in `find -E $target -type f -iregex ".*\.(zip|jar|ear|war|sar|tgz|gz|tar|bz2|gem|xz)"` ; do
+    # TBD: .txz, .par, .bz2, .Z
+    for file in `find -E $target -type f -iregex ".*\.(zip|jar|ear|war|sar|tgz|gz|tar|tbz2|tbz|gem|xz)"` ; do
       explode $file $depthleft
     done
   else
@@ -52,6 +53,7 @@ explodeFile() {
 
   pushd $dirname
   if [ ! -d $contents ] ; then
+    # TBD: Should check if the filetype is a supported archive before mkdir
     mkdir "$contents"
   fi
   pushd $contents
@@ -63,7 +65,7 @@ explodeFile() {
       cmd="tar xzf ../$filename"
     fi
   elif [ $ftype = "application/x-bzip2" ] ; then
-    cmd="tar xzf ../$filename"
+    cmd="tar xjf ../$filename"
   elif [ $ftype = "application/x-xz" ] ; then
     cmd="tar xzf ../$filename"
   elif [ $ftype = "application/x-tar" ] ; then
