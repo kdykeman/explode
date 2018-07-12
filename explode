@@ -97,7 +97,6 @@ while getopts "d:" opt; do
       if ! [[ $DEPTH =~ $re ]] ; then
         echo "error: Not a valid depth: $DEPTH" >&2; exit 1
       fi
-      echo "The value provided for depth is $OPTARG" >&2
       ;;
     *)
       usage
